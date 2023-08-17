@@ -3,8 +3,7 @@ import numpy as np
 from ROAR_Sim.configurations.configuration import Configuration as CarlaConfig
 from ROAR.configurations.configuration import Configuration as AgentConfig
 from pathlib import Path
-from ROAR.agent_module.pure_pursuit_agent \
-    import PurePursuitAgent
+from ROAR.agent_module.pure_pursuit_agent import PurePursuitAgent
 from ROAR_Sim.carla_client.carla_runner import CarlaRunner
 from typing import Tuple
 from prettytable import PrettyTable
@@ -51,7 +50,7 @@ def run(agent_class, agent_config_file_path: Path, carla_config_file_path: Path,
     agent_config: AgentConfig = AgentConfig.parse_file(agent_config_file_path)
     carla_config = CarlaConfig.parse_file(carla_config_file_path)
 
-    # hard code agent config such that it reflect competition requirements
+    # hard code agent config such that it reflect competition requirementsddd
     agent_config.num_laps = num_laps
     carla_runner = CarlaRunner(carla_settings=carla_config,
                                agent_settings=agent_config,
@@ -63,6 +62,7 @@ def run(agent_class, agent_config_file_path: Path, carla_config_file_path: Path,
         my_vehicle = carla_runner.set_carla_world()
         agent = agent_class(vehicle=my_vehicle, agent_settings=agent_config)
         carla_runner.start_game_loop(agent=agent, use_manual_control=False)
+        #carla_runner.start_game_loop(agent=agent, use_manual_control=True)
         return compute_score(carla_runner)
     except Exception:
         print(f"something bad happened during initialization: {e}")
@@ -83,6 +83,7 @@ def suppress_warnings():
 def main():
     suppress_warnings()
     agent_class = PIDFastAgent
+    #agent_class = WaypointGeneratigAgent
     num_trials = 1
     total_score_array = []
     num_laps = 1
